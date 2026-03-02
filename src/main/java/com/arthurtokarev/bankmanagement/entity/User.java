@@ -7,7 +7,7 @@ import lombok.Data;
 
 import java.util.HashSet;
 import java.util.Set;
-
+// Bank management system
 @Entity
 @Table(name = "users")
 @Data
