@@ -21,5 +21,5 @@ public class UserProfile {
     @OneToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference
-    private User user;
+    private BankUser bankUser;
 }

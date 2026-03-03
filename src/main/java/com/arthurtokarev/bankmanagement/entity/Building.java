@@ -23,7 +23,7 @@ public class Building {
 
     @ManyToMany(mappedBy = "buildings")
     @JsonIgnore
-    private Set<User> users = new HashSet<>();
+    private Set<BankUser> bankUsers = new HashSet<>();
 
     @OneToMany(mappedBy = "building", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference

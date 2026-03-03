@@ -1,7 +1,7 @@
 package com.arthurtokarev.bankmanagement.service;
 
+import com.arthurtokarev.bankmanagement.entity.BankUser;
 import com.arthurtokarev.bankmanagement.entity.Building;
-import com.arthurtokarev.bankmanagement.entity.User;
 import com.arthurtokarev.bankmanagement.entity.UserProfile;
 import com.arthurtokarev.bankmanagement.repository.DepartmentRepository;
 import com.arthurtokarev.bankmanagement.repository.UserRepository;
@@ -19,67 +19,67 @@ public class UserService {
     private DepartmentRepository departmentRepository;
 
     @Transactional
-    public User createUser(User user) {
-        if (user.getUserProfile() != null) {
-            user.getUserProfile().setUser(user);
+    public BankUser createUser(BankUser bankUser) {
+        if (bankUser.getUserProfile() != null) {
+            bankUser.getUserProfile().setBankUser(bankUser);
         }
-        return userRepository.save(user);
+        return userRepository.save(bankUser);
     }
     @Transactional
     public void assignUserToBuilding(Long userId, Long buildingId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        BankUser bankUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         Building building = departmentRepository.findById(buildingId).orElseThrow(() -> new RuntimeException("Building not found"));
-        user.getBuildings().add(building);
-        building.getUsers().add(user);
-        userRepository.save(user);
+        bankUser.getBuildings().add(building);
+        building.getBankUsers().add(bankUser);
+        userRepository.save(bankUser);
     }
     @Transactional
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
     @Transactional(readOnly = true)
-    public List<User> getAllUsers() {
+    public List<BankUser> getAllUsers() {
         return userRepository.findAll();
     }
     @Transactional(readOnly = true)
-    public User getUserById(Long id) {
+    public BankUser getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
     @Transactional
-    public User updateUser(Long id, User updatedUser) {
-        User existingUser = userRepository.findById(id)
+    public BankUser updateUser(Long id, BankUser updatedBankUser) {
+        BankUser existingBankUser = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
-        existingUser.setFirstName(updatedUser.getFirstName());
-        existingUser.setLastName(updatedUser.getLastName());
-        existingUser.setEmail(updatedUser.getEmail());
+        existingBankUser.setFirstName(updatedBankUser.getFirstName());
+        existingBankUser.setLastName(updatedBankUser.getLastName());
+        existingBankUser.setEmail(updatedBankUser.getEmail());
         // update profile safely
-        if (updatedUser.getUserProfile() != null) {
-            UserProfile profile = updatedUser.getUserProfile();
-            profile.setUser(existingUser);
-            existingUser.setUserProfile(profile);
+        if (updatedBankUser.getUserProfile() != null) {
+            UserProfile profile = updatedBankUser.getUserProfile();
+            profile.setBankUser(existingBankUser);
+            existingBankUser.setUserProfile(profile);
         }
-        return userRepository.save(existingUser);
+        return userRepository.save(existingBankUser);
     }
 
     @Transactional
     public void removeUsersFromBuilding(Long userId, Long buildingId) {
-        User user = userRepository.findById(userId)
+        BankUser bankUser = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Building building = departmentRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Building not found"));
 
-        user.getBuildings().remove(building);
-        building.getUsers().remove(user);
+        bankUser.getBuildings().remove(building);
+        building.getBankUsers().remove(bankUser);
     }
 
     @Transactional(readOnly = true)
     public UserProfile getUserProfile(Long userId) {
-        User user = userRepository.findById(userId)
+        BankUser bankUser = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        return user.getUserProfile();
+        return bankUser.getUserProfile();
     }
 
     @Transactional(readOnly = true)

@@ -1,6 +1,6 @@
 package com.arthurtokarev.bankmanagement.controller;
 
-import com.arthurtokarev.bankmanagement.entity.User;
+import com.arthurtokarev.bankmanagement.entity.BankUser;
 import com.arthurtokarev.bankmanagement.entity.UserProfile;
 import com.arthurtokarev.bankmanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,24 +17,24 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        return ResponseEntity.ok(userService.createUser(user));
+    public ResponseEntity<BankUser> createUser(@RequestBody BankUser bankUser) {
+        return ResponseEntity.ok(userService.createUser(bankUser));
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<BankUser>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    public ResponseEntity<BankUser> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id,
-                                              @RequestBody User user) {
-        return ResponseEntity.ok(userService.updateUser(id, user));
+    public ResponseEntity<BankUser> updateUser(@PathVariable Long id,
+                                               @RequestBody BankUser bankUser) {
+        return ResponseEntity.ok(userService.updateUser(id, bankUser));
     }
 
     @DeleteMapping("/{id}")
